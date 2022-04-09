@@ -20,3 +20,12 @@ function drawCircle(x, y, r, color){
 }
 
 drawCircle(100, 100, 50, "WHITE");
+
+//Draw Text
+function drawText(text, x, y, color){
+    context.fillStyle = color;
+    context.font = "45px fantasy";
+    context.fillText(text, x, y);
+}
+
+drawText("WUSSUP", 300, 200, "WHITE")
