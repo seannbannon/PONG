@@ -10,7 +10,13 @@ function drawRectangle(x, y, w, h, color){
 
 drawRectangle(0, 0, canvas.width, canvas.height, "BLACK");
 
-//Draw Cricle
+//Draw Crirle
 function drawCircle(x, y, r, color){
-
+    context.fillStyle = color;
+    context.beginPath();
+    context.arc(x, y, r, 0, Math.PI * 2, false);
+    context.closePath();
+    context.fill();
 }
+
+drawCircle(100, 100, 50, "WHITE");
