@@ -1,8 +1,30 @@
-// select canvas
+// Select Canvas
 const canvas = document.getElementById("pong");
 const context = canvas.getContext("2d");
 
-// draw rectangle function
+//Create User Paddle
+const user = {
+    x : 0,
+    y : canvas.height/2 - 100/2,
+    width : 10,
+    height : 100,
+    color : "WHITE",
+    score : 0
+}
+
+//Create Computer Paddle
+const computer = {
+    x : canvas.width - 10,
+    y : canvas.height/2 - 100/2,
+    width : 10,
+    height : 100,
+    color : "WHITE",
+    score : 0
+}
+
+//Create the Ball
+
+// Draw Rectangle Function
 function drawRectangle(x, y, w, h, color){
     context.fillStyle = color;
     context.fillRect(x, y, w, h);
