@@ -132,7 +132,24 @@ function update(){
     let player = (ball.x < canvas.width/2) ? user : computer;
 
     if (collision(ball, player)){
+        // Where the ball hits the Player
+        let collidePoint = ball.y - (player.y + player.height/2);
 
+        //Normalization
+        collidePoint = collidePoint / player.height / 2;
+
+        //Calculate Angle in Radian
+        let angleRad = collidePoint * Math.PI/4;
+
+        //X direction of Ball when it is hit
+        let direction = (ball.x < canvas.width/2) ? 1 : -1;
+
+        //Change the Velicity X and Y
+        ball.velocityX = direction * ball.speed * Math.cos(angleRad);
+        ball.velocityY = ball.speed * Math.sin(angleRad);
+
+        //Whenever ball hits a paddle, we increase it's speed
+        ball.speed += 0.1;
     }
 }
 
