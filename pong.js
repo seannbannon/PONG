@@ -41,7 +41,7 @@ function drawRectangle(x, y, w, h, color){
 
 //Create the Net
 const net = {
-    x : canvas.width - 1,
+    x : canvas.width/2 - 1,
     y : 0,
     width : 2,
     height : 10,
@@ -85,8 +85,17 @@ function render(){
 
     //Draw the User and Computer Paddles
     drawRectangle(user.x, user.y, user.width, user.height, user.color);
-    drawRectangle(com.x, com.y, com.width, com.height, com.color);
+    drawRectangle(computer.x, computer.y, computer.width, computer.height, computer.color);
 
     //Draw the Ball
     drawCircle(ball.x, ball.y, ball.radius, ball.color);
 }
+
+//Game Init
+function game(){
+    render();
+}
+
+//Loop
+const framesPerSecond = 50;
+setInterval(game, 1000/framesPerSecond);
