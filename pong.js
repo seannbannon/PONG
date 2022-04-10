@@ -2,7 +2,7 @@
 const canvas = document.getElementById("pong");
 const context = canvas.getContext("2d");
 
-//Create User Paddle
+// Create User Paddle
 const user = {
     x : 0,
     y : canvas.height/2 - 100/2,
@@ -12,7 +12,7 @@ const user = {
     score : 0
 }
 
-//Create Computer Paddle
+// Create Computer Paddle
 const computer = {
     x : canvas.width - 10,
     y : canvas.height/2 - 100/2,
@@ -22,7 +22,7 @@ const computer = {
     score : 0
 }
 
-//Create the Ball
+// Create the Ball
 const ball = {
     x : canvas.width/2,
     y : canvas.height/2,
@@ -39,7 +39,7 @@ function drawRectangle(x, y, w, h, color){
     context.fillRect(x, y, w, h);
 }
 
-//Create the Net
+// Create the Net
 const net = {
     x : canvas.width/2 - 1,
     y : 0,
@@ -48,14 +48,14 @@ const net = {
     color : "WHITE"
 }
 
-//Draw the Net 
+// Draw the Net 
 function drawNet(){
     for(let i = 0; i <= canvas.height; i += 15){
         drawRectangle(net.x, net.y + i, net.width, net.height, net.color);
     }
 }
 
-//Draw Crirle
+// Draw Crirle
 function drawCircle(x, y, r, color){
     context.fillStyle = color;
     context.beginPath();
@@ -64,14 +64,14 @@ function drawCircle(x, y, r, color){
     context.fill();
 }
 
-//Draw Text
+// Draw Text
 function drawText(text, x, y, color){
     context.fillStyle = color;
     context.font = "45px fantasy";
     context.fillText(text, x, y);
 }
 
-//Render the Game
+// Render the Game
 function render(){
     // Clear the Canvas
     drawRectangle(0, 0, canvas.width, canvas.height, "BLACK");
@@ -91,7 +91,7 @@ function render(){
     drawCircle(ball.x, ball.y, ball.radius, ball.color);
 }
 
-//Control the User Paddle
+// Control the User Paddle
 
 canvas.addEventListener("mousemove", movePaddle);
 
@@ -101,7 +101,7 @@ function movePaddle(event){
     user.y = event.clientY - rect.top - user.height/2; 
 }
 
-//Collision Detection (b = ball, p = player)
+// Collision Detection (b = ball, p = player)
 function collision(b, p){
     b.top = b.y - b.radius;
     b.bottom = b.y + b.radius;
@@ -116,12 +116,21 @@ function collision(b, p){
     return b.right > p.left && b.bottom > p.top && b.left < p.right && b.top < p.bottom;
 }
 
-//Update : Position, Movement, Score, ...
+// Reset Ball
+function resetBall(){
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height / 2;
+
+    ball.speed = 5;
+    ball.velocityX = -ball.velocityX;
+}
+
+// Update : Position, Movement, Score, ...
 function update(){
     ball.x += ball.velocityX;
     ball.y += ball.velocityY;
 
-    //Simple AI to control the computer paddle
+    // Simple AI to control the computer paddle
     computerLevel = 0.1;
     computer.y += (ball.y - (computer.y + computer.height/2)) * computerLevel;
 
@@ -135,30 +144,40 @@ function update(){
         // Where the ball hits the Player
         let collidePoint = ball.y - (player.y + player.height/2);
 
-        //Normalization
-        collidePoint = collidePoint / player.height / 2;
+        // Normalization
+        collidePoint = collidePoint / (player.height / 2);
 
-        //Calculate Angle in Radian
+        // Calculate Angle in Radian
         let angleRad = collidePoint * Math.PI/4;
 
-        //X direction of Ball when it is hit
+        // X direction of Ball when it is hit
         let direction = (ball.x < canvas.width/2) ? 1 : -1;
 
-        //Change the Velicity X and Y
+        // Change the Velicity X and Y
         ball.velocityX = direction * ball.speed * Math.cos(angleRad);
-        ball.velocityY = ball.speed * Math.sin(angleRad);
+        ball.velocityY =             ball.speed * Math.sin(angleRad);
 
-        //Whenever ball hits a paddle, we increase it's speed
-        ball.speed += 0.1;
+        // Whenever ball hits a paddle, we increase it's speed
+        ball.speed += 0.5;
+    }
+    // Update the Score
+    if(ball.x - ball.radius < 0){
+        // Computer Score Goes Up
+        computer.score++;
+        resetBall();
+    }else if (ball.x + ball.radius > canvas.width){
+        // User Score Goes Up
+        user.score++;
+        resetBall();
     }
 }
 
-//Game Init
+// Game Init
 function game(){
     update();
     render();
 }
 
-//Loop
+// Loop
 const framesPerSecond = 50;
 setInterval(game, 1000/framesPerSecond);
