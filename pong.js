@@ -48,6 +48,13 @@ const net = {
     color : "WHITE"
 }
 
+//Draw the Net 
+function drawNet(){
+    for(let i = 0; i <= canvas.height; i += 15){
+        drawRectangle(net.x, net.y + i, net.width, net.height, net.color);
+    }
+}
+
 //Draw Crirle
 function drawCircle(x, y, r, color){
     context.fillStyle = color;
