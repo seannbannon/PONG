@@ -91,8 +91,50 @@ function render(){
     drawCircle(ball.x, ball.y, ball.radius, ball.color);
 }
 
+//Control the User Paddle
+
+canvas.addEventListener("mousemove", movePaddle);
+
+function movePaddle(event){
+    let rect = canvas.getBoundingClientRect();
+
+    user.y = event.clientY - rect.top - user.height/2;
+}
+
+//Collision Detection (b = ball, p = player)
+function collision(b, p){
+    b.top = b.y - b.radius;
+    b.bottom = b.y + b.radius;
+    b.left = b.x - b.radius;
+    b.right = b.x + b.radius;
+
+    p.top = p.y;
+    p.bottom = p.y + p.height;
+    p.left = p.x;
+    p.right = p.x + p.width;
+
+    return b.right > p.left && b.bottom > p.top && b.left < p.right && b.top < p.bottom;
+}
+
+//Update : Position, Movement, Score, ...
+function update(){
+    ball.x += ball.velocityX;
+    ball.y += ball.velocityY;
+
+    if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0){
+        ball.velocityY = -ball.velocityY;
+    }
+
+    let player = (ball.x < canvas.width/2) ? user : computer;
+
+    if (collision(ball, player)){
+
+    }
+}
+
 //Game Init
 function game(){
+    update();
     render();
 }
 
